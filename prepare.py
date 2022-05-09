@@ -8,15 +8,15 @@ from nltk.tokenize.toktok import ToktokTokenizer
 from nltk.corpus import stopwords
 
 
-def basic_clean(data):
+def basic_clean(text):
     '''
     This function accepts data (string) and lowers the all upper cases, normalize 
     unicode chars, and replace chars that aren't letters, numbers, whitespaces, or single character. 
     '''
-    string_data = data.lower()
-    string_data = unicodedata.normalize('NFKD', string_data).encode('ascii', 'ignore').decode('utf-8', 'ignore')
-    string_data = re.sub(r"[^a-z0-9'\s]", '', string_data)
-    return string_data
+    text = re.sub(r"[^a-z0-9'\s]", '', text.lower())
+
+    clean_text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+    return clean_text
     
 def tokenize(string_data):
     '''
