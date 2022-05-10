@@ -8,3 +8,5 @@ __pycache__/
 # Github limits push  to under 100MB
 *.csvenv.py
 env.py
+nlp_explore.ipynb
+nlp_prepare.ipynb
