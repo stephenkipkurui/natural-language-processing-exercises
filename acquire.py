@@ -1,8 +1,8 @@
-from requests import get
-from bs4 import BeautifulSoup
-import pandas as pd
 import os
 import requests
+import pandas as pd
+from requests import get
+from bs4 import BeautifulSoup
 
 #===================PEOPLE DATA=====================
 def get_people_web_scrap_data():
@@ -24,7 +24,7 @@ def get_people_web_scrap_data():
 # ====================CODEUP DATa======================
 def get_blog_article_urls():
     headers = {'user-agent': 'Innis Codeup Data Science'}
-    response = requests.get('https://codeup.com/blog/', headers = headers)
+    response = requests.get('https://codeup.com/blog/', headers=headers)
     soup = BeautifulSoup(response.text)
     urls = [a.attrs['href'] for a in soup.select('a.more-link')]
     return urls
@@ -34,9 +34,9 @@ def parse_blog_article(soup):
         'title': soup.select_one('h1.entry-title').text,
         'published': soup.select_one('.published').text,
         'content': soup.select_one('.entry-content').text.strip(),
-        }
+    }
 
-def get_blog_articles(use_cache = True):
+def get_blog_articles(use_cache=True):
     if os.path.exists('codeup_blog_articles.json') and use_cache:
         return pd.read_json('codeup_blog_articles.json')
 
@@ -44,8 +44,8 @@ def get_blog_articles(use_cache = True):
     articles = []
 
     for url in urls:
-        print(f'Acquiring {url}')
-        response = requests.get(url, header = headers)
+        print(f'fetching {url}')
+        response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.text)
         articles.append(parse_blog_article(soup))
 
@@ -92,7 +92,7 @@ def get_news_articles(use_cache = True):
     for category in categories:
         print(f'Getting {category} articles')
         articles.extend(parse_news_category(category))
-
+    # Convert to dataframe
     df = pd.DataFrame(articles)
     df.to_json('news_articles.json', orient = 'records')
     return df
